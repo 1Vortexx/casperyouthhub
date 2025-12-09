@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Survey Form | Professional Feedback System</title>
+    <title>Casper Youth Hub | Share Your Voice</title>
 
     <!-- Font Awesome -->
     <link
@@ -13,7 +13,7 @@
 
     <!-- Google Fonts -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
@@ -24,538 +24,974 @@
         box-sizing: border-box;
       }
 
-      body {
-        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, sans-serif;
-        background: #f8fafc;
-        color: #1e293b;
-        line-height: 1.6;
-        padding: 40px 20px;
+      :root {
+        --primary: #6366f1;
+        --secondary: #ec4899;
+        --accent: #14b8a6;
+        --bg-main: #0f172a;
+        --bg-card: #1e293b;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --success: #10b981;
+        --error: #ef4444;
       }
 
-      .container {
-        max-width: 900px;
-        margin: 0 auto;
+      body {
+        font-family: "Inter", sans-serif;
+        background: var(--bg-main);
+        color: var(--text-primary);
+        overflow-x: hidden;
+        height: 100vh;
+      }
+
+      /* Animated Background */
+      .background-animation {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+      }
+
+      .bg-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.15;
+        animation: float 20s infinite ease-in-out;
+      }
+
+      .orb-1 {
+        width: 500px;
+        height: 500px;
+        background: var(--primary);
+        top: -200px;
+        left: -200px;
+      }
+
+      .orb-2 {
+        width: 400px;
+        height: 400px;
+        background: var(--secondary);
+        bottom: -150px;
+        right: -150px;
+        animation-delay: 7s;
+      }
+
+      .orb-3 {
+        width: 350px;
+        height: 350px;
+        background: var(--accent);
+        top: 50%;
+        left: 50%;
+        animation-delay: 14s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        33% {
+          transform: translate(100px, -50px) scale(1.1);
+        }
+        66% {
+          transform: translate(-50px, 100px) scale(0.9);
+        }
       }
 
       /* ============================================
-           HEADER
-           ============================================ */
-      .header {
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        color: white;
-        padding: 50px 40px;
-        border-radius: 20px 20px 0 0;
-        text-align: center;
-        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+         SPLIT SCREEN LAYOUT - UNIQUE!
+         ============================================ */
+      .app-container {
+        display: flex;
+        height: 100vh;
+        position: relative;
+        z-index: 1;
       }
 
-      .header-icon {
+      /* LEFT SIDEBAR - Survey Info & Progress */
+      .sidebar {
+        width: 380px;
+        background: var(--bg-card);
+        border-right: 1px solid rgba(99, 102, 241, 0.3);
+        padding: 40px 32px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow-y: auto;
+      }
+
+      .sidebar::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: linear-gradient(
+          180deg,
+          var(--primary),
+          var(--secondary),
+          var(--accent)
+        );
+      }
+
+      .logo-section {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .logo {
         width: 80px;
         height: 80px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 50%;
-        display: flex;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 20px;
+        display: inline-flex;
         align-items: center;
         justify-content: center;
-        margin: 0 auto 24px;
         font-size: 36px;
+        margin-bottom: 16px;
+        animation: pulse 3s infinite;
+        box-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
       }
 
-      .header h1 {
-        font-size: 36px;
-        font-weight: 700;
-        margin-bottom: 12px;
+      @keyframes pulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
       }
 
-      .header p {
-        font-size: 18px;
-        opacity: 0.95;
-        font-weight: 400;
+      .logo-section h1 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 26px;
+        margin-bottom: 8px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
-      /* ============================================
-           SURVEY SELECTOR
-           ============================================ */
+      .logo-section p {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      /* Survey Selector */
       .survey-selector {
-        background: white;
-        padding: 32px 40px;
-        border-bottom: 2px solid #f1f5f9;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        margin-bottom: 40px;
       }
 
-      .survey-selector label {
-        display: flex;
-        align-items: center;
-        gap: 10px;
+      .survey-selector h3 {
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--text-secondary);
         margin-bottom: 12px;
         font-weight: 600;
-        color: #0f172a;
-        font-size: 15px;
-      }
-
-      .survey-selector label i {
-        color: #3b82f6;
-        font-size: 18px;
       }
 
       .survey-selector select {
         width: 100%;
         padding: 14px 16px;
-        border: 2px solid #e2e8f0;
+        background: var(--bg-main);
+        border: 2px solid rgba(99, 102, 241, 0.3);
         border-radius: 12px;
-        font-size: 15px;
-        background: white;
-        color: #1e293b;
+        color: var(--text-primary);
+        font-size: 14px;
+        font-family: inherit;
         cursor: pointer;
         transition: all 0.3s;
-        font-family: inherit;
       }
 
       .survey-selector select:focus {
         outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        border-color: var(--primary);
       }
 
-      /* ============================================
-           FORM CONTAINER
-           ============================================ */
-      .form-container {
-        background: white;
-        padding: 40px;
-        border-radius: 0 0 20px 20px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      /* Progress Section */
+      .progress-section {
+        margin-top: auto;
+        padding-top: 30px;
+        border-top: 1px solid rgba(148, 163, 184, 0.2);
       }
 
-      .loading,
-      .no-survey {
-        text-align: center;
-        padding: 80px 40px;
-        color: #64748b;
-      }
-
-      .loading i,
-      .no-survey i {
-        font-size: 64px;
-        margin-bottom: 20px;
-        color: #cbd5e1;
-        display: block;
-      }
-
-      .loading p,
-      .no-survey p {
-        font-size: 16px;
-      }
-
-      /* ============================================
-           EMAIL INPUT
-           ============================================ */
-      .email-section {
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        padding: 28px;
-        border-radius: 16px;
-        margin-bottom: 36px;
-        border: 2px solid #e2e8f0;
-      }
-
-      .email-section label {
+      .progress-label {
         display: flex;
-        align-items: center;
-        gap: 10px;
+        justify-content: space-between;
         margin-bottom: 12px;
-        font-weight: 600;
-        color: #0f172a;
-        font-size: 15px;
+        font-size: 14px;
+        color: var(--text-secondary);
       }
 
-      .email-section label i {
-        color: #3b82f6;
-        font-size: 18px;
+      .progress-label strong {
+        color: var(--text-primary);
       }
 
-      .email-section .helper-text {
-        font-size: 13px;
-        color: #64748b;
-        margin-bottom: 12px;
-      }
-
-      .input-with-icon {
+      .circular-progress {
+        width: 120px;
+        height: 120px;
+        margin: 30px auto;
         position: relative;
       }
 
-      .input-with-icon i {
+      .circular-progress svg {
+        transform: rotate(-90deg);
+      }
+
+      .progress-circle-bg {
+        fill: none;
+        stroke: var(--bg-main);
+        stroke-width: 10;
+      }
+
+      .progress-circle-fill {
+        fill: none;
+        stroke: url(#gradient);
+        stroke-width: 10;
+        stroke-linecap: round;
+        transition: stroke-dashoffset 0.5s ease;
+      }
+
+      .progress-text {
         position: absolute;
-        left: 16px;
         top: 50%;
-        transform: translateY(-50%);
-        color: #94a3b8;
-        font-size: 16px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 32px;
+        font-weight: 700;
+        font-family: "Space Grotesk", sans-serif;
       }
 
-      .email-section input {
-        width: 100%;
-        padding: 14px 16px 14px 46px;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        font-size: 15px;
-        transition: all 0.3s;
-        font-family: inherit;
-        background: white;
+      .question-list {
+        margin-top: 20px;
       }
 
-      .email-section input:focus {
-        outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-      }
-
-      /* ============================================
-           QUESTIONS
-           ============================================ */
-      .question-block {
-        margin-bottom: 36px;
-        padding: 28px;
-        background: #f8fafc;
-        border-radius: 16px;
-        border: 2px solid #e2e8f0;
-        transition: all 0.3s;
-      }
-
-      .question-block:hover {
-        border-color: #cbd5e1;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      }
-
-      .question-label {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 16px;
-        font-size: 16px;
-        font-weight: 600;
-        color: #0f172a;
-      }
-
-      .question-label i {
-        color: #3b82f6;
-        font-size: 18px;
-        margin-top: 2px;
-      }
-
-      .required {
-        color: #ef4444;
-        margin-left: 4px;
-      }
-
-      .question-input {
-        width: 100%;
-        padding: 14px 16px;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        font-size: 15px;
-        font-family: inherit;
-        transition: all 0.3s;
-        background: white;
-      }
-
-      .question-input:focus {
-        outline: none;
-        border-color: #3b82f6;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-      }
-
-      textarea.question-input {
-        min-height: 140px;
-        resize: vertical;
-      }
-
-      /* Radio and Checkbox Options */
-      .radio-group,
-      .checkbox-group {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .radio-option,
-      .checkbox-option {
+      .question-item {
         display: flex;
         align-items: center;
-        padding: 16px 18px;
-        background: white;
-        border: 2px solid #e2e8f0;
-        border-radius: 12px;
-        cursor: pointer;
-        transition: all 0.3s;
-      }
-
-      .radio-option:hover,
-      .checkbox-option:hover {
-        border-color: #3b82f6;
-        background: #f8fafc;
-        transform: translateX(4px);
-      }
-
-      .radio-option input[type="radio"],
-      .checkbox-option input[type="checkbox"] {
-        margin-right: 14px;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        accent-color: #3b82f6;
-      }
-
-      .radio-option label,
-      .checkbox-option label {
-        cursor: pointer;
-        flex: 1;
-        color: #1e293b;
-        font-size: 15px;
-      }
-
-      /* Scale Input */
-      .scale-container {
-        background: white;
-        padding: 24px;
-        border-radius: 12px;
-        border: 2px solid #e2e8f0;
-      }
-
-      .scale-labels {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 16px;
-      }
-
-      .scale-label {
+        gap: 12px;
+        padding: 12px;
+        margin-bottom: 8px;
+        background: var(--bg-main);
+        border-radius: 8px;
         font-size: 13px;
-        color: #64748b;
-        font-weight: 500;
+        transition: all 0.3s;
+        cursor: pointer;
       }
 
-      .scale-options {
-        display: flex;
-        gap: 12px;
-        justify-content: space-between;
-        align-items: center;
+      .question-item:hover {
+        background: rgba(99, 102, 241, 0.1);
       }
 
-      .scale-option {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
+      .question-item.active {
+        background: rgba(99, 102, 241, 0.2);
+        border-left: 3px solid var(--primary);
       }
 
-      .scale-option input[type="radio"] {
+      .question-item.completed {
+        opacity: 0.6;
+      }
+
+      .question-item .icon {
         width: 24px;
         height: 24px;
-        cursor: pointer;
-        accent-color: #3b82f6;
-      }
-
-      .scale-option label {
-        font-size: 13px;
-        color: #64748b;
-        cursor: pointer;
-        font-weight: 600;
-      }
-
-      /* Error Message */
-      .error-message {
-        color: #ef4444;
-        font-size: 14px;
-        margin-top: 8px;
-        display: none;
+        border-radius: 50%;
         display: flex;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
+        font-size: 10px;
+        background: var(--bg-main);
+        border: 2px solid var(--text-secondary);
+        flex-shrink: 0;
       }
 
-      .error-message i {
-        font-size: 14px;
+      .question-item.completed .icon {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-color: var(--primary);
+        color: white;
       }
 
       /* ============================================
-           SUBMIT BUTTON
-           ============================================ */
-      .submit-section {
-        margin-top: 48px;
-        padding-top: 36px;
-        border-top: 2px solid #e2e8f0;
-        text-align: center;
+         CENTER - MAIN QUESTION DISPLAY (FULL SCREEN!)
+         ============================================ */
+      .main-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 60px;
+        position: relative;
+        overflow-y: auto; /* Make scrollable */
+        scroll-behavior: smooth; /* Smooth scrolling */
       }
 
-      .btn-submit {
-        padding: 18px 56px;
-        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-        color: white;
+      /* Custom scrollbar for main content */
+      .main-content::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      .main-content::-webkit-scrollbar-track {
+        background: rgba(30, 41, 59, 0.5);
+      }
+
+      .main-content::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, var(--primary), var(--secondary));
+        border-radius: 5px;
+      }
+
+      .main-content::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, var(--secondary), var(--accent));
+      }
+
+      .welcome-screen,
+      .question-screen,
+      .complete-screen {
+        max-width: 700px;
+        width: 100%;
+        text-align: center;
+        animation: fadeInScale 0.6s ease-out;
+        margin: auto; /* Center vertically when content is smaller than container */
+      }
+
+      @keyframes fadeInScale {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Welcome Screen */
+      .welcome-screen h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 48px;
+        margin-bottom: 20px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .welcome-screen p {
+        font-size: 20px;
+        color: var(--text-secondary);
+        margin-bottom: 40px;
+        line-height: 1.6;
+      }
+
+      .start-btn {
+        padding: 20px 50px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
         border: none;
-        border-radius: 12px;
-        font-size: 17px;
+        border-radius: 16px;
+        color: white;
+        font-size: 18px;
         font-weight: 700;
         cursor: pointer;
         transition: all 0.3s;
         display: inline-flex;
         align-items: center;
         gap: 12px;
-        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 12px 30px rgba(99, 102, 241, 0.4);
       }
 
-      .btn-submit:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4);
+      .start-btn:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 40px rgba(99, 102, 241, 0.6);
       }
 
-      .btn-submit:active {
-        transform: translateY(-1px);
+      /* Question Screen - ONE QUESTION AT A TIME! */
+      .question-display {
+        animation: slideInRight 0.5s ease-out;
       }
 
-      .btn-submit:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
+      @keyframes slideInRight {
+        from {
+          opacity: 0;
+          transform: translateX(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
       }
 
-      .btn-submit i {
-        font-size: 20px;
-      }
-
-      /* ============================================
-           SUCCESS MESSAGE
-           ============================================ */
-      .success-message {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-        color: white;
-        padding: 32px;
-        border-radius: 16px;
-        text-align: center;
-        display: none;
-        margin-bottom: 24px;
-        box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
-      }
-
-      .success-message i {
-        font-size: 64px;
-        margin-bottom: 16px;
-        display: block;
-      }
-
-      .success-message h3 {
-        font-size: 28px;
-        margin-bottom: 12px;
-        font-weight: 700;
-      }
-
-      .success-message p {
+      .question-number-big {
         font-size: 16px;
-        opacity: 0.95;
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      .question-title {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 42px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        line-height: 1.3;
+      }
+
+      .question-subtitle {
+        color: var(--text-secondary);
+        font-size: 18px;
+        margin-bottom: 50px;
+      }
+
+      /* Email Input - Centered */
+      .email-input-wrapper {
+        max-width: 500px;
+        margin: 0 auto 50px;
+        text-align: left;
+      }
+
+      .email-input-wrapper label {
+        display: block;
+        font-size: 14px;
+        color: var(--text-secondary);
+        margin-bottom: 12px;
+      }
+
+      .email-input-wrapper input {
+        width: 100%;
+        padding: 18px 24px;
+        background: var(--bg-card);
+        border: 2px solid rgba(99, 102, 241, 0.3);
+        border-radius: 14px;
+        color: var(--text-primary);
+        font-size: 16px;
+        font-family: inherit;
+        transition: all 0.3s;
+      }
+
+      .email-input-wrapper input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+      }
+
+      /* Answer Options - Centered */
+      .answer-options {
+        max-width: 600px;
+        margin: 0 auto;
+        max-height: 60vh; /* Limit height */
+        overflow-y: auto; /* Make scrollable */
+        padding-right: 8px; /* Space for scrollbar */
+      }
+
+      /* Custom scrollbar for answer area */
+      .answer-options::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .answer-options::-webkit-scrollbar-track {
+        background: var(--bg-card);
+        border-radius: 4px;
+      }
+
+      .answer-options::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, var(--primary), var(--secondary));
+        border-radius: 4px;
+      }
+
+      .answer-options::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, var(--secondary), var(--accent));
+      }
+
+      /* Text Input - Centered */
+      .answer-options input[type="text"],
+      .answer-options textarea,
+      .answer-options select {
+        width: 100%;
+        padding: 20px 24px;
+        background: var(--bg-card);
+        border: 2px solid rgba(99, 102, 241, 0.3);
+        border-radius: 14px;
+        color: var(--text-primary);
+        font-size: 18px;
+        font-family: inherit;
+        transition: all 0.3s;
+        text-align: center;
+      }
+
+      .answer-options textarea {
+        min-height: 150px;
+        resize: vertical;
+        text-align: left;
+      }
+
+      .answer-options input:focus,
+      .answer-options textarea:focus,
+      .answer-options select:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+      }
+
+      /* Radio/Checkbox Options - LARGE CARDS */
+      .options-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 16px;
+        margin-top: 30px;
+        max-height: 50vh; /* Limit height for many options */
+        overflow-y: auto; /* Make scrollable */
+        padding-right: 8px; /* Space for scrollbar */
+      }
+
+      /* Custom scrollbar for options */
+      .options-grid::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      .options-grid::-webkit-scrollbar-track {
+        background: var(--bg-card);
+        border-radius: 4px;
+      }
+
+      .options-grid::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 4px;
+      }
+
+      .options-grid::-webkit-scrollbar-thumb:hover {
+        background: var(--secondary);
+      }
+
+      .option-card {
+        position: relative;
+      }
+
+      .option-card input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .option-card label {
+        display: block;
+        padding: 30px 24px;
+        background: var(--bg-card);
+        border: 2px solid rgba(99, 102, 241, 0.3);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        font-size: 18px;
+        position: relative;
+      }
+
+      .option-card label:hover {
+        border-color: var(--primary);
+        transform: translateY(-4px);
+        box-shadow: 0 12px 30px rgba(99, 102, 241, 0.3);
+      }
+
+      .option-card input:checked + label {
+        background: linear-gradient(
+          135deg,
+          rgba(99, 102, 241, 0.3),
+          rgba(236, 72, 153, 0.3)
+        );
+        border-color: var(--primary);
+        box-shadow: 0 12px 30px rgba(99, 102, 241, 0.4);
+      }
+
+      .option-card input:checked + label::after {
+        content: "\f00c";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        width: 28px;
+        height: 28px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+      }
+
+      /* Scale Options - LARGE BUTTONS */
+      .scale-grid {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        margin-top: 30px;
+      }
+
+      .scale-option {
+        position: relative;
+      }
+
+      .scale-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .scale-option label {
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--bg-card);
+        border: 2px solid rgba(99, 102, 241, 0.3);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-size: 32px;
+        font-weight: 700;
+        font-family: "Space Grotesk", sans-serif;
+      }
+
+      .scale-option label:hover {
+        border-color: var(--primary);
+        transform: scale(1.1);
+      }
+
+      .scale-option input:checked + label {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-color: var(--primary);
+        box-shadow: 0 12px 30px rgba(99, 102, 241, 0.6);
+        transform: scale(1.15);
+      }
+
+      .scale-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        font-size: 14px;
+        color: var(--text-secondary);
+        max-width: 500px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Scroll Indicator */
+      .scroll-indicator {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        opacity: 0.6;
+        animation: bounce 2s infinite;
+        pointer-events: none;
+      }
+
+      .scroll-indicator.hidden {
+        display: none;
+      }
+
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(10px);
+        }
+      }
+
+      .scroll-indicator i {
+        font-size: 24px;
+        color: var(--primary);
+      }
+
+      .scroll-indicator span {
+        font-size: 12px;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      /* Navigation Buttons */
+      .nav-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 50px;
+      }
+
+      .btn-prev,
+      .btn-next,
+      .btn-skip {
+        padding: 16px 40px;
+        border: 2px solid rgba(99, 102, 241, 0.3);
+        border-radius: 12px;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .btn-next {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        border-color: var(--primary);
+      }
+
+      .btn-prev:hover,
+      .btn-next:hover,
+      .btn-skip:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+      }
+
+      .btn-next:hover {
+        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+      }
+
+      /* Error Message */
+      .error-message {
+        margin-top: 20px;
+        padding: 16px 24px;
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid var(--error);
+        border-radius: 12px;
+        color: var(--error);
+        display: none;
+        align-items: center;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      /* Complete Screen */
+      .complete-screen .icon {
+        width: 150px;
+        height: 150px;
+        background: linear-gradient(135deg, var(--success), var(--accent));
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 80px;
+        margin: 0 auto 30px;
+        animation: successPulse 0.8s ease-out;
+      }
+
+      @keyframes successPulse {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .complete-screen h2 {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 48px;
+        margin-bottom: 20px;
+      }
+
+      .complete-screen p {
+        font-size: 20px;
+        color: var(--text-secondary);
+        margin-bottom: 30px;
       }
 
       /* ============================================
-           RESPONSIVE
-           ============================================ */
+         RESPONSIVE
+         ============================================ */
+      @media (max-width: 1024px) {
+        .sidebar {
+          width: 300px;
+          padding: 30px 20px;
+        }
+
+        .main-content {
+          padding: 40px 30px;
+        }
+
+        .question-title {
+          font-size: 32px;
+        }
+      }
+
       @media (max-width: 768px) {
-        body {
-          padding: 20px 10px;
+        .app-container {
+          flex-direction: column;
+          height: auto;
+          min-height: 100vh;
         }
 
-        .header {
-          padding: 40px 24px;
-          border-radius: 16px 16px 0 0;
+        .sidebar {
+          width: 100%;
+          border-right: none;
+          border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+          padding: 30px 20px;
         }
 
-        .header h1 {
+        .sidebar::before {
+          width: 100%;
+          height: 4px;
+        }
+
+        .progress-section {
+          display: none;
+        }
+
+        .main-content {
+          padding: 40px 20px;
+          min-height: calc(100vh - 300px);
+        }
+
+        .question-title {
           font-size: 28px;
         }
 
-        .header p {
-          font-size: 16px;
+        .options-grid {
+          grid-template-columns: 1fr;
         }
 
-        .survey-selector,
-        .form-container {
-          padding: 24px 20px;
-        }
-
-        .question-block {
-          padding: 20px;
-        }
-
-        .scale-options {
+        .scale-grid {
           flex-wrap: wrap;
         }
 
-        .scale-option {
-          min-width: 60px;
+        .scale-option label {
+          width: 60px;
+          height: 60px;
+          font-size: 24px;
         }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <div class="header-icon">
-          <i class="fas fa-clipboard-list"></i>
-        </div>
-        <h1>Survey Form</h1>
-        <p>We value your feedback and opinions</p>
-      </div>
+    <!-- Animated Background -->
+    <div class="background-animation">
+      <div class="bg-orb orb-1"></div>
+      <div class="bg-orb orb-2"></div>
+      <div class="bg-orb orb-3"></div>
+    </div>
 
-      <div class="survey-selector">
-        <label>
-          <i class="fas fa-poll-h"></i>
-          Select Survey
-        </label>
-        <select id="surveySelect">
-          <option value="">Loading surveys...</option>
-        </select>
-      </div>
-
-      <div class="form-container">
-        <div class="loading" id="loadingMessage">
-          <i class="fas fa-spinner fa-spin"></i>
-          <p>Please select a survey to begin</p>
+    <div class="app-container">
+      <!-- LEFT SIDEBAR -->
+      <aside class="sidebar">
+        <div class="logo-section">
+          <div class="logo">
+            <i class="fas fa-users"></i>
+          </div>
+          <h1>Casper Youth Hub</h1>
+          <p>Share Your Voice</p>
         </div>
 
-        <div class="success-message" id="successMessage">
-          <i class="fas fa-check-circle"></i>
-          <h3>Thank You!</h3>
-          <p>Your response has been submitted successfully.</p>
+        <div class="survey-selector">
+          <h3>Select Survey</h3>
+          <select id="surveySelect">
+            <option value="">Loading...</option>
+          </select>
         </div>
 
-        <form id="surveyForm" style="display: none">
-          <div class="email-section">
-            <label>
-              <i class="fas fa-envelope"></i>
-              Email Address
-            </label>
-            <p class="helper-text">
-              Optional - Provide your email if you'd like to receive a copy of
-              your response
-            </p>
-            <div class="input-with-icon">
-              <i class="fas fa-envelope"></i>
-              <input
-                type="email"
-                id="respondentEmail"
-                placeholder="your.email@example.com"
-              />
-            </div>
+        <div
+          class="progress-section"
+          id="progressSection"
+          style="display: none"
+        >
+          <div class="progress-label">
+            <span>Progress</span>
+            <strong id="progressText">0 / 0</strong>
           </div>
 
-          <div id="questionsContainer"></div>
+          <div class="circular-progress">
+            <svg width="120" height="120">
+              <defs>
+                <linearGradient
+                  id="gradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop
+                    offset="0%"
+                    style="stop-color: #6366f1; stop-opacity: 1"
+                  />
+                  <stop
+                    offset="100%"
+                    style="stop-color: #ec4899; stop-opacity: 1"
+                  />
+                </linearGradient>
+              </defs>
+              <circle
+                class="progress-circle-bg"
+                cx="60"
+                cy="60"
+                r="52"
+              ></circle>
+              <circle
+                class="progress-circle-fill"
+                cx="60"
+                cy="60"
+                r="52"
+                stroke-dasharray="326.73"
+                stroke-dashoffset="326.73"
+                id="progressCircle"
+              ></circle>
+            </svg>
+            <div class="progress-text" id="progressPercent">0%</div>
+          </div>
 
-          <div class="submit-section">
-            <button type="submit" class="btn-submit">
-              <i class="fas fa-paper-plane"></i>
-              Submit Response
-            </button>
+          <div class="question-list" id="questionList"></div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT - CENTER SCREEN -->
+      <main class="main-content">
+        <!-- Welcome Screen -->
+        <div class="welcome-screen" id="welcomeScreen">
+          <h2>👋 Welcome!</h2>
+          <p>
+            Select a survey from the left to begin sharing your thoughts and
+            helping shape your community.
+          </p>
+        </div>
+
+        <!-- Question Form -->
+        <form id="surveyForm" style="display: none">
+          <div class="question-screen" id="questionScreen">
+            <!-- Questions will be inserted here dynamically -->
           </div>
         </form>
-      </div>
+
+        <!-- Complete Screen -->
+        <div class="complete-screen" id="completeScreen" style="display: none">
+          <div class="icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <h2>Amazing!</h2>
+          <p>
+            Your response has been submitted successfully.<br />Thank you for
+            sharing your voice!
+          </p>
+          <button class="start-btn" onclick="resetSurvey()">
+            <i class="fas fa-redo"></i>
+            Take Another Survey
+          </button>
+        </div>
+      </main>
     </div>
 
     <script>
@@ -568,6 +1004,8 @@
 
       let currentSurvey = null;
       let currentQuestions = [];
+      let currentQuestionIndex = -1; // -1 = email screen
+      let answers = {};
 
       // ============================================
       // LOAD SURVEYS
@@ -585,30 +1023,23 @@
           );
 
           const surveys = await response.json();
-          populateSurveySelect(surveys);
+          const select = document.getElementById("surveySelect");
+
+          if (surveys.length === 0) {
+            select.innerHTML = '<option value="">No surveys available</option>';
+            return;
+          }
+
+          select.innerHTML = '<option value="">-- Choose Survey --</option>';
+          surveys.forEach((survey) => {
+            const option = document.createElement("option");
+            option.value = survey.id;
+            option.textContent = survey.title;
+            select.appendChild(option);
+          });
         } catch (error) {
           console.error("Error loading surveys:", error);
-          document.getElementById("surveySelect").innerHTML =
-            '<option value="">Error loading surveys</option>';
         }
-      }
-
-      function populateSurveySelect(surveys) {
-        const select = document.getElementById("surveySelect");
-
-        if (surveys.length === 0) {
-          select.innerHTML =
-            '<option value="">No active surveys available</option>';
-          return;
-        }
-
-        select.innerHTML = '<option value="">-- Select a survey --</option>';
-        surveys.forEach((survey) => {
-          const option = document.createElement("option");
-          option.value = survey.id;
-          option.textContent = survey.title;
-          select.appendChild(option);
-        });
       }
 
       // ============================================
@@ -620,27 +1051,15 @@
           const surveyId = e.target.value;
 
           if (!surveyId) {
-            document.getElementById("surveyForm").style.display = "none";
-            document.getElementById("loadingMessage").style.display = "block";
-            document.getElementById("loadingMessage").innerHTML =
-              '<i class="fas fa-clipboard-list"></i><p>Please select a survey to begin</p>';
+            resetToWelcome();
             return;
           }
 
           await loadSurveyQuestions(surveyId);
         });
 
-      // ============================================
-      // LOAD QUESTIONS
-      // ============================================
       async function loadSurveyQuestions(surveyId) {
         try {
-          const loadingDiv = document.getElementById("loadingMessage");
-          loadingDiv.style.display = "block";
-          loadingDiv.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i><p>Loading questions...</p>';
-          document.getElementById("surveyForm").style.display = "none";
-
           const surveyResponse = await fetch(
             `${SUPABASE_URL}/rest/v1/surveys?id=eq.${surveyId}&select=*`,
             {
@@ -664,365 +1083,495 @@
           );
 
           currentQuestions = await questionsResponse.json();
+          answers = {};
+          currentQuestionIndex = -1; // Start with email
 
-          // Update header with survey title and description
-          document.querySelector(".header h1").textContent =
-            currentSurvey.title || "Survey Form";
-          document.querySelector(".header p").textContent =
-            currentSurvey.description || "We value your feedback and opinions";
+          buildQuestionList();
+          updateProgress(); // Initial progress update
+          showQuestion(currentQuestionIndex);
 
-          renderQuestions();
-
-          loadingDiv.style.display = "none";
+          document.getElementById("welcomeScreen").style.display = "none";
           document.getElementById("surveyForm").style.display = "block";
+          document.getElementById("progressSection").style.display = "block";
         } catch (error) {
           console.error("Error loading questions:", error);
-          document.getElementById("loadingMessage").innerHTML =
-            '<i class="fas fa-exclamation-triangle"></i><p>Error loading survey questions</p>';
         }
       }
 
       // ============================================
-      // RENDER QUESTIONS
+      // BUILD QUESTION LIST SIDEBAR
       // ============================================
-      function renderQuestions() {
-        const container = document.getElementById("questionsContainer");
-        container.innerHTML = "";
+      function buildQuestionList() {
+        const list = document.getElementById("questionList");
+        list.innerHTML = "";
 
-        console.log("Rendering questions:", currentQuestions.length);
+        currentQuestions.forEach((q, index) => {
+          const item = document.createElement("div");
+          item.className = "question-item";
+          item.onclick = () => showQuestion(index);
 
-        currentQuestions.forEach((question, index) => {
-          console.log(`Question ${index + 1}:`, {
-            type: question.question_type,
-            text: question.question_text,
-            options: question.options,
-            required: question.is_required,
-          });
+          const icon = document.createElement("div");
+          icon.className = "icon";
+          icon.innerHTML =
+            answers[q.id] !== undefined
+              ? '<i class="fas fa-check"></i>'
+              : index + 1;
 
-          const questionBlock = document.createElement("div");
-          questionBlock.className = "question-block";
+          const text = document.createElement("span");
+          text.textContent =
+            q.question_text.substring(0, 30) +
+            (q.question_text.length > 30 ? "..." : "");
 
-          const label = document.createElement("label");
-          label.className = "question-label";
-
-          const iconMap = {
-            text: "fa-font",
-            paragraph: "fa-align-left",
-            multiple_choice: "fa-list-ul",
-            checkbox: "fa-check-square",
-            dropdown: "fa-chevron-circle-down",
-            scale: "fa-sliders-h",
-            date: "fa-calendar",
-            time: "fa-clock",
-          };
-
-          const icon = iconMap[question.question_type] || "fa-question-circle";
-
-          label.innerHTML = `<i class="fas ${icon}"></i><span>${index + 1}. ${
-            question.question_text
-          }${
-            question.is_required ? '<span class="required">*</span>' : ""
-          }</span>`;
-
-          questionBlock.appendChild(label);
-
-          const input = createInputForQuestion(question);
-          questionBlock.appendChild(input);
-
-          const errorMessage = document.createElement("div");
-          errorMessage.className = "error-message";
-          errorMessage.id = `error-${question.id}`;
-          errorMessage.innerHTML =
-            '<i class="fas fa-exclamation-circle"></i> This field is required';
-          questionBlock.appendChild(errorMessage);
-
-          container.appendChild(questionBlock);
+          item.appendChild(icon);
+          item.appendChild(text);
+          list.appendChild(item);
         });
       }
 
-      function createInputForQuestion(question) {
-        const container = document.createElement("div");
+      // ============================================
+      // SHOW QUESTION - ONE AT A TIME
+      // ============================================
+      function showQuestion(index) {
+        currentQuestionIndex = index;
+        const screen = document.getElementById("questionScreen");
+        screen.innerHTML = "";
 
+        // Update sidebar active state
+        document.querySelectorAll(".question-item").forEach((item, i) => {
+          item.classList.toggle("active", i === index);
+          if (
+            currentQuestions[i] &&
+            answers[currentQuestions[i].id] !== undefined
+          ) {
+            item.classList.add("completed");
+          }
+        });
+
+        // Email screen (index -1)
+        if (index === -1) {
+          screen.innerHTML = `
+            <div class="question-display">
+              <div class="question-number-big">OPTIONAL</div>
+              <h3 class="question-title">What's your email?</h3>
+              <p class="question-subtitle">We'll send you a copy of your responses</p>
+              
+              <div class="email-input-wrapper">
+                <input 
+                  type="email" 
+                  id="respondentEmail" 
+                  placeholder="your.email@example.com"
+                  value="${answers.email || ""}"
+                />
+              </div>
+
+              <div class="nav-buttons">
+                <button type="button" class="btn-skip" onclick="skipEmail()">
+                  Skip
+                </button>
+                <button type="button" class="btn-next" onclick="nextQuestion()">
+                  Continue
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          `;
+          checkScrollIndicator();
+          return;
+        }
+
+        // Regular questions
+        if (index >= currentQuestions.length) {
+          submitSurvey();
+          return;
+        }
+
+        const question = currentQuestions[index];
+        const isLast = index === currentQuestions.length - 1;
+
+        let answerHTML = createAnswerInput(question);
+
+        screen.innerHTML = `
+          <div class="question-display">
+            <div class="question-number-big">QUESTION ${index + 1} OF ${
+          currentQuestions.length
+        }</div>
+            <h3 class="question-title">${question.question_text}</h3>
+            ${
+              question.is_required
+                ? '<p class="question-subtitle">This question is required</p>'
+                : ""
+            }
+            
+            <div class="answer-options" id="answerContainer">
+              ${answerHTML}
+            </div>
+
+            <div class="error-message" id="errorMsg">
+              <i class="fas fa-exclamation-circle"></i>
+              Please answer this question to continue
+            </div>
+
+            <div class="nav-buttons">
+              ${
+                index > 0
+                  ? '<button type="button" class="btn-prev" onclick="prevQuestion()"><i class="fas fa-arrow-left"></i> Previous</button>'
+                  : ""
+              }
+              ${
+                !question.is_required
+                  ? '<button type="button" class="btn-skip" onclick="skipQuestion()">Skip</button>'
+                  : ""
+              }
+              <button type="button" class="btn-next" onclick="nextQuestion()">
+                ${isLast ? "Submit" : "Next"}
+                <i class="fas fa-${isLast ? "check" : "arrow-right"}"></i>
+              </button>
+            </div>
+          </div>
+        `;
+
+        // Restore previous answer if exists
+        restoreAnswer(question);
+
+        // Check if scroll indicator needed
+        checkScrollIndicator();
+      }
+
+      // ============================================
+      // CHECK SCROLL INDICATOR
+      // ============================================
+      function checkScrollIndicator() {
+        setTimeout(() => {
+          const mainContent = document.querySelector(".main-content");
+          const answerContainer = document.getElementById("answerContainer");
+
+          // Remove existing indicator if present
+          const existingIndicator = document.querySelector(".scroll-indicator");
+          if (existingIndicator) {
+            existingIndicator.remove();
+          }
+
+          // Check if content is scrollable
+          if (
+            answerContainer &&
+            answerContainer.scrollHeight > answerContainer.clientHeight
+          ) {
+            const indicator = document.createElement("div");
+            indicator.className = "scroll-indicator";
+            indicator.innerHTML =
+              '<i class="fas fa-chevron-down"></i><span>Scroll</span>';
+            mainContent.appendChild(indicator);
+
+            // Hide indicator when user scrolls
+            answerContainer.addEventListener(
+              "scroll",
+              () => {
+                indicator.classList.add("hidden");
+              },
+              { once: true }
+            );
+          }
+        }, 100);
+      }
+
+      // ============================================
+      // CREATE ANSWER INPUT
+      // ============================================
+      function createAnswerInput(question) {
         switch (question.question_type) {
           case "text":
-            const textInput = document.createElement("input");
-            textInput.type = "text";
-            textInput.className = "question-input";
-            textInput.id = `q-${question.id}`;
-            textInput.name = question.google_form_item_id;
-            textInput.required = question.is_required;
-            textInput.placeholder = "Enter your answer...";
-            container.appendChild(textInput);
-            break;
+            return `<input type="text" id="answer" placeholder="Type your answer..." />`;
 
           case "paragraph":
-            const textarea = document.createElement("textarea");
-            textarea.className = "question-input";
-            textarea.id = `q-${question.id}`;
-            textarea.name = question.google_form_item_id;
-            textarea.required = question.is_required;
-            textarea.placeholder = "Enter your detailed answer...";
-            container.appendChild(textarea);
-            break;
+            return `<textarea id="answer" placeholder="Share your thoughts..."></textarea>`;
 
           case "multiple_choice":
-            const radioGroup = document.createElement("div");
-            radioGroup.className = "radio-group";
-
-            if (question.options && Array.isArray(question.options)) {
-              question.options.forEach((option, idx) => {
-                const optionDiv = document.createElement("div");
-                optionDiv.className = "radio-option";
-
-                const radio = document.createElement("input");
-                radio.type = "radio";
-                radio.id = `q-${question.id}-${idx}`;
-                radio.name = question.google_form_item_id;
-                radio.value = option;
-                radio.required = question.is_required;
-
-                const label = document.createElement("label");
-                label.htmlFor = `q-${question.id}-${idx}`;
-                label.textContent = option;
-
-                optionDiv.appendChild(radio);
-                optionDiv.appendChild(label);
-                radioGroup.appendChild(optionDiv);
-              });
-            }
-            container.appendChild(radioGroup);
-            break;
+            if (!question.options || !Array.isArray(question.options))
+              return "";
+            return `
+              <div class="options-grid">
+                ${question.options
+                  .map(
+                    (opt, i) => `
+                  <div class="option-card">
+                    <input type="radio" name="answer" id="opt-${i}" value="${opt}" />
+                    <label for="opt-${i}">${opt}</label>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+            `;
 
           case "checkbox":
-            const checkboxGroup = document.createElement("div");
-            checkboxGroup.className = "checkbox-group";
-
-            if (question.options && Array.isArray(question.options)) {
-              question.options.forEach((option, idx) => {
-                const optionDiv = document.createElement("div");
-                optionDiv.className = "checkbox-option";
-
-                const checkbox = document.createElement("input");
-                checkbox.type = "checkbox";
-                checkbox.id = `q-${question.id}-${idx}`;
-                checkbox.name = question.google_form_item_id;
-                checkbox.value = option;
-
-                const label = document.createElement("label");
-                label.htmlFor = `q-${question.id}-${idx}`;
-                label.textContent = option;
-
-                optionDiv.appendChild(checkbox);
-                optionDiv.appendChild(label);
-                checkboxGroup.appendChild(optionDiv);
-              });
-            }
-            container.appendChild(checkboxGroup);
-            break;
+            if (!question.options || !Array.isArray(question.options))
+              return "";
+            return `
+              <div class="options-grid">
+                ${question.options
+                  .map(
+                    (opt, i) => `
+                  <div class="option-card">
+                    <input type="checkbox" name="answer" id="opt-${i}" value="${opt}" />
+                    <label for="opt-${i}">${opt}</label>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+            `;
 
           case "dropdown":
-            const select = document.createElement("select");
-            select.className = "question-input";
-            select.id = `q-${question.id}`;
-            select.name = question.google_form_item_id;
-            select.required = question.is_required;
-
-            const defaultOption = document.createElement("option");
-            defaultOption.value = "";
-            defaultOption.textContent = "-- Select an option --";
-            select.appendChild(defaultOption);
-
-            if (question.options && Array.isArray(question.options)) {
-              question.options.forEach((option) => {
-                const opt = document.createElement("option");
-                opt.value = option;
-                opt.textContent = option;
-                select.appendChild(opt);
-              });
-            }
-            container.appendChild(select);
-            break;
+            if (!question.options || !Array.isArray(question.options))
+              return "";
+            return `
+              <select id="answer">
+                <option value="">-- Choose --</option>
+                ${question.options
+                  .map((opt) => `<option value="${opt}">${opt}</option>`)
+                  .join("")}
+              </select>
+            `;
 
           case "scale":
-            const scaleContainer = document.createElement("div");
-            scaleContainer.className = "scale-container";
-
-            const scaleLabels = document.createElement("div");
-            scaleLabels.className = "scale-labels";
-            scaleLabels.innerHTML = `
-                        <span class="scale-label"><i class="fas fa-arrow-left"></i> ${
-                          question.options?.lower_label || "Low"
-                        }</span>
-                        <span class="scale-label">${
-                          question.options?.upper_label || "High"
-                        } <i class="fas fa-arrow-right"></i></span>
-                    `;
-
-            const scaleOptions = document.createElement("div");
-            scaleOptions.className = "scale-options";
-
-            const lowerBound = question.options?.lower_bound || 1;
-            const upperBound = question.options?.upper_bound || 5;
-
-            for (let i = lowerBound; i <= upperBound; i++) {
-              const scaleOption = document.createElement("div");
-              scaleOption.className = "scale-option";
-
-              const radio = document.createElement("input");
-              radio.type = "radio";
-              radio.id = `q-${question.id}-${i}`;
-              radio.name = question.google_form_item_id;
-              radio.value = i;
-              radio.required = question.is_required;
-
-              const label = document.createElement("label");
-              label.htmlFor = `q-${question.id}-${i}`;
-              label.textContent = i;
-
-              scaleOption.appendChild(radio);
-              scaleOption.appendChild(label);
-              scaleOptions.appendChild(scaleOption);
-            }
-
-            scaleContainer.appendChild(scaleLabels);
-            scaleContainer.appendChild(scaleOptions);
-            container.appendChild(scaleContainer);
-            break;
+            const lower = question.options?.lower_bound || 1;
+            const upper = question.options?.upper_bound || 5;
+            return `
+              <div class="scale-grid">
+                ${Array.from({ length: upper - lower + 1 }, (_, i) => lower + i)
+                  .map(
+                    (num) => `
+                  <div class="scale-option">
+                    <input type="radio" name="answer" id="scale-${num}" value="${num}" />
+                    <label for="scale-${num}">${num}</label>
+                  </div>
+                `
+                  )
+                  .join("")}
+              </div>
+              <div class="scale-labels">
+                <span>${question.options?.lower_label || "Low"}</span>
+                <span>${question.options?.upper_label || "High"}</span>
+              </div>
+            `;
 
           case "date":
-            const dateInput = document.createElement("input");
-            dateInput.type = "date";
-            dateInput.className = "question-input";
-            dateInput.id = `q-${question.id}`;
-            dateInput.name = question.google_form_item_id;
-            dateInput.required = question.is_required;
-            container.appendChild(dateInput);
-            break;
+            return `<input type="date" id="answer" />`;
 
           case "time":
-            const timeInput = document.createElement("input");
-            timeInput.type = "time";
-            timeInput.className = "question-input";
-            timeInput.id = `q-${question.id}`;
-            timeInput.name = question.google_form_item_id;
-            timeInput.required = question.is_required;
-            container.appendChild(timeInput);
-            break;
+            return `<input type="time" id="answer" />`;
 
           default:
-            const defaultInput = document.createElement("input");
-            defaultInput.type = "text";
-            defaultInput.className = "question-input";
-            defaultInput.id = `q-${question.id}`;
-            defaultInput.name = question.google_form_item_id;
-            defaultInput.required = question.is_required;
-            container.appendChild(defaultInput);
+            return `<input type="text" id="answer" />`;
         }
-
-        return container;
       }
 
       // ============================================
-      // FORM SUBMISSION
+      // NAVIGATION
       // ============================================
-      document
-        .getElementById("surveyForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
+      function nextQuestion() {
+        const question = currentQuestions[currentQuestionIndex];
 
-          document.querySelectorAll(".error-message").forEach((el) => {
-            el.style.display = "none";
-          });
+        if (currentQuestionIndex === -1) {
+          // Save email
+          answers.email = document.getElementById("respondentEmail").value;
+          currentQuestionIndex = 0;
+          showQuestion(0);
+          return;
+        }
 
-          const formData = new FormData(e.target);
-          const responseData = {};
-          let hasError = false;
+        // Validate and save answer
+        if (question.is_required && !saveCurrentAnswer()) {
+          document.getElementById("errorMsg").style.display = "flex";
+          return;
+        }
 
-          currentQuestions.forEach((question) => {
-            const fieldName = question.google_form_item_id;
+        saveCurrentAnswer();
+        currentQuestionIndex++;
 
-            if (question.question_type === "checkbox") {
-              const values = formData.getAll(fieldName);
-              if (question.is_required && values.length === 0) {
-                document.getElementById(`error-${question.id}`).style.display =
-                  "flex";
-                hasError = true;
-              } else {
-                responseData[fieldName] = values;
-              }
-            } else {
-              const value = formData.get(fieldName);
-              if (question.is_required && !value) {
-                document.getElementById(`error-${question.id}`).style.display =
-                  "flex";
-                hasError = true;
-              } else if (value) {
-                responseData[fieldName] = value;
-              }
-            }
-          });
+        if (currentQuestionIndex >= currentQuestions.length) {
+          submitSurvey();
+        } else {
+          showQuestion(currentQuestionIndex);
+        }
+      }
 
-          if (hasError) {
-            return;
+      function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+          currentQuestionIndex--;
+          showQuestion(currentQuestionIndex);
+        }
+      }
+
+      function skipQuestion() {
+        currentQuestionIndex++;
+        if (currentQuestionIndex >= currentQuestions.length) {
+          submitSurvey();
+        } else {
+          showQuestion(currentQuestionIndex);
+        }
+      }
+
+      function skipEmail() {
+        currentQuestionIndex = 0;
+        showQuestion(0);
+      }
+
+      // ============================================
+      // SAVE/RESTORE ANSWERS
+      // ============================================
+      function saveCurrentAnswer() {
+        const question = currentQuestions[currentQuestionIndex];
+        const container = document.getElementById("answerContainer");
+
+        if (question.question_type === "checkbox") {
+          const checked = Array.from(
+            container.querySelectorAll('input[name="answer"]:checked')
+          ).map((cb) => cb.value);
+          if (checked.length > 0) {
+            answers[question.id] = checked;
+            updateProgress();
+            return true;
           }
+          return false;
+        } else if (
+          question.question_type === "multiple_choice" ||
+          question.question_type === "scale"
+        ) {
+          const selected = container.querySelector(
+            'input[name="answer"]:checked'
+          );
+          if (selected) {
+            answers[question.id] = selected.value;
+            updateProgress();
+            return true;
+          }
+          return false;
+        } else {
+          const input = container.querySelector("#answer");
+          if (input && input.value.trim()) {
+            answers[question.id] = input.value;
+            updateProgress();
+            return true;
+          }
+          return false;
+        }
+      }
 
-          try {
-            const submitButton = e.target.querySelector(".btn-submit");
-            submitButton.disabled = true;
-            submitButton.innerHTML =
-              '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      function restoreAnswer(question) {
+        const answer = answers[question.id];
+        if (!answer) return;
 
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/responses`, {
-              method: "POST",
-              headers: {
-                apikey: SUPABASE_ANON_KEY,
-                Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-                "Content-Type": "application/json",
-                Prefer: "return=minimal",
-              },
-              body: JSON.stringify({
-                survey_id: currentSurvey.id,
-                response_data: responseData,
-                respondent_email:
-                  document.getElementById("respondentEmail").value || null,
-                submitted_at: new Date().toISOString(),
-              }),
-            });
+        const container = document.getElementById("answerContainer");
 
-            if (response.ok) {
-              document.getElementById("successMessage").style.display = "block";
-              document.getElementById("surveyForm").style.display = "none";
+        if (question.question_type === "checkbox") {
+          answer.forEach((val) => {
+            const checkbox = container.querySelector(`input[value="${val}"]`);
+            if (checkbox) checkbox.checked = true;
+          });
+        } else if (
+          question.question_type === "multiple_choice" ||
+          question.question_type === "scale"
+        ) {
+          const radio = container.querySelector(`input[value="${answer}"]`);
+          if (radio) radio.checked = true;
+        } else {
+          const input = container.querySelector("#answer");
+          if (input) input.value = answer;
+        }
+      }
 
-              e.target.reset();
+      // ============================================
+      // PROGRESS
+      // ============================================
+      function updateProgress() {
+        const answered = Object.keys(answers).filter(
+          (k) => k !== "email"
+        ).length;
+        const total = currentQuestions.length;
+        const percent = Math.round((answered / total) * 100);
 
-              window.scrollTo({ top: 0, behavior: "smooth" });
+        document.getElementById(
+          "progressText"
+        ).textContent = `${answered} / ${total}`;
+        document.getElementById("progressPercent").textContent = `${percent}%`;
 
-              setTimeout(() => {
-                document.getElementById("successMessage").style.display =
-                  "none";
-                document.getElementById("surveySelect").value = "";
-                document.getElementById("loadingMessage").style.display =
-                  "block";
-                document.getElementById("loadingMessage").innerHTML =
-                  '<i class="fas fa-clipboard-list"></i><p>Please select a survey to begin</p>';
-              }, 4000);
-            } else {
-              throw new Error("Failed to submit response");
-            }
+        const circle = document.getElementById("progressCircle");
+        const circumference = 326.73;
+        const offset = circumference - (percent / 100) * circumference;
+        circle.style.strokeDashoffset = offset;
 
-            submitButton.disabled = false;
-            submitButton.innerHTML =
-              '<i class="fas fa-paper-plane"></i> Submit Response';
-          } catch (error) {
-            console.error("Error submitting response:", error);
-            alert("Error submitting response. Please try again.");
-
-            const submitButton = e.target.querySelector(".btn-submit");
-            submitButton.disabled = false;
-            submitButton.innerHTML =
-              '<i class="fas fa-paper-plane"></i> Submit Response';
+        // Update existing question list items (don't rebuild)
+        const items = document.querySelectorAll(".question-item");
+        items.forEach((item, index) => {
+          const question = currentQuestions[index];
+          const icon = item.querySelector(".icon");
+          if (answers[question.id] !== undefined) {
+            icon.innerHTML = '<i class="fas fa-check"></i>';
+            item.classList.add("completed");
+          } else {
+            icon.textContent = index + 1;
+            item.classList.remove("completed");
           }
         });
+      }
+
+      // ============================================
+      // SUBMIT
+      // ============================================
+      async function submitSurvey() {
+        try {
+          const responseData = {};
+          currentQuestions.forEach((q) => {
+            if (answers[q.id] !== undefined) {
+              responseData[q.google_form_item_id] = answers[q.id];
+            }
+          });
+
+          const response = await fetch(`${SUPABASE_URL}/rest/v1/responses`, {
+            method: "POST",
+            headers: {
+              apikey: SUPABASE_ANON_KEY,
+              Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+              "Content-Type": "application/json",
+              Prefer: "return=minimal",
+            },
+            body: JSON.stringify({
+              survey_id: currentSurvey.id,
+              response_data: responseData,
+              respondent_email: answers.email || null,
+              submitted_at: new Date().toISOString(),
+            }),
+          });
+
+          if (response.ok) {
+            document.getElementById("surveyForm").style.display = "none";
+            document.getElementById("completeScreen").style.display = "block";
+          }
+        } catch (error) {
+          console.error("Error submitting:", error);
+          alert("Error submitting. Please try again.");
+        }
+      }
+
+      // ============================================
+      // RESET
+      // ============================================
+      function resetSurvey() {
+        document.getElementById("completeScreen").style.display = "none";
+        document.getElementById("welcomeScreen").style.display = "block";
+        document.getElementById("progressSection").style.display = "none";
+        document.getElementById("surveySelect").value = "";
+        answers = {};
+        currentQuestionIndex = -1;
+      }
+
+      function resetToWelcome() {
+        document.getElementById("surveyForm").style.display = "none";
+        document.getElementById("completeScreen").style.display = "none";
+        document.getElementById("welcomeScreen").style.display = "block";
+        document.getElementById("progressSection").style.display = "none";
+      }
 
       // ============================================
       // INITIALIZE
